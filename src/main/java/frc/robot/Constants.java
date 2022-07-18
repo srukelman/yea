@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.geometry.Translation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -29,20 +33,54 @@ public final class Constants {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 0; 
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 1; 
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2; 
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); // FIXME Measure and set front left steer offset
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); 
 
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3; 
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 5;
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);// FIXME Measure and set front right steer offset
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);
 
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 6; 
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 7; 
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 8; 
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);// FIXME Measure and set back left steer offset
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);
+
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 9;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 10; 
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11; 
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); // FIXME Measure and set back right steer offset
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0);
+
+    public static final double k_TELEDRIVE_MAX_ACCELERATION = 3;
+    public static final double k_TELEDRIVE_MAX_ANGULAR_ACCELERATION = 3;
+    public static final double k_PHYSICAL_MAX_SPEED_METERS_PER_SECOND = 0;
+    public static final double k_PHYSICAL_MAX_ANGULAR_SPEED_RAD_PER_SECOND = 0;
+
+    public static final SwerveDriveKinematics k_DRIVE_KINEMATICS = new SwerveDriveKinematics(
+          // Front left
+          new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+          // Front right
+          new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0),
+          // Back left
+          new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+          // Back right
+          new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0)
+    );
+
+    public static final class AutoConstants {
+        public static final double k_MAX_SPEED_METERS_PER_SECOND = Constants.k_PHYSICAL_MAX_SPEED_METERS_PER_SECOND / 4;
+        public static final double k_MAX_ANGULAR_SPEED_RADS_PER_SECOND = Constants.k_PHYSICAL_MAX_ANGULAR_SPEED_RAD_PER_SECOND / 10;
+        public static final double k_MAX_ACCELERATION_METERS_PER_SECOND_SQ = 3;
+        public static final double k_MAX_ANGULAR_ACCELERATION_RADS_PER_SECOND_SQ = Math.PI / 4;
+        public static final double k_PX_CONTROLLER = 1.5;
+        public static final double k_PY_CONTROLLER = 1.5;
+        public static final double K_PTHETA_CONTROLLER = 3;
+    
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
+                new TrapezoidProfile.Constraints(
+                        k_MAX_ANGULAR_SPEED_RADS_PER_SECOND,
+                        k_MAX_ANGULAR_ACCELERATION_RADS_PER_SECOND_SQ);
+    }
 }
+
+

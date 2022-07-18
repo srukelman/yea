@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 import java.util.function.DoubleSupplier;
@@ -12,6 +14,7 @@ public class DefaultDriveCommand extends CommandBase {
     private final DoubleSupplier m_translationXSupplier;
     private final DoubleSupplier m_translationYSupplier;
     private final DoubleSupplier m_rotationSupplier;
+    private final SlewRateLimiter xLimiter, yLimiter, zLimiter;
 
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem,
                                DoubleSupplier translationXSupplier,
@@ -21,6 +24,9 @@ public class DefaultDriveCommand extends CommandBase {
         this.m_translationXSupplier = translationXSupplier;
         this.m_translationYSupplier = translationYSupplier;
         this.m_rotationSupplier = rotationSupplier;
+        this.xLimiter = new SlewRateLimiter(Constants.k_TELEDRIVE_MAX_ACCELERATION);
+        this.yLimiter = new SlewRateLimiter(Constants.k_TELEDRIVE_MAX_ACCELERATION);
+        this.zLimiter = new SlewRateLimiter(Constants.k_TELEDRIVE_MAX_ANGULAR_ACCELERATION);
 
         addRequirements(drivetrainSubsystem);
     }
